@@ -1,4 +1,5 @@
-﻿using BetfairClient.Clients.Interfaces;
+﻿using Ardalis.GuardClauses;
+using BetfairClient.Clients.Interfaces;
 using BetfairClient.Models.Betting;
 using System;
 using System.Collections.Generic;
@@ -59,9 +60,10 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<TimeRangeResult>> GetListTimeRanges(MarketFilter marketFilter, TimeGranularity timeGranularity)
         {
-            var bodyRequest = new { 
+            var bodyRequest = new
+            {
                 Filter = marketFilter,
-                Granularity = timeGranularity 
+                Granularity = timeGranularity
             };
 
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
@@ -73,7 +75,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<EventResult>> GetListEvents(MarketFilter marketFilter, string? locale)
         {
-            if (marketFilter == null) { throw new ArgumentNullException(nameof(marketFilter)); }
+            Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
             {
@@ -90,7 +92,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<MarketTypeResult>> GetListMarketTypes(MarketFilter marketFilter, string? locale)
         {
-            if (marketFilter == null) { throw new ArgumentNullException(nameof(marketFilter)); }
+            Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
             {
@@ -107,7 +109,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<CountryCodeResult>> GetListCountries(MarketFilter marketFilter, string? locale)
         {
-            if (marketFilter == null) { throw new ArgumentNullException(nameof(marketFilter)); }
+            Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
             {
@@ -124,7 +126,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<VenueResult>> GetListVenues(MarketFilter marketFilter, string? locale)
         {
-            if (marketFilter == null) { throw new ArgumentNullException(nameof(marketFilter)); }
+            Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
             {
@@ -139,12 +141,11 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogue(MarketFilter marketFilter, IEnumerable<MarketProjection> marketProjection, 
+        public async Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogue(MarketFilter marketFilter, IEnumerable<MarketProjection> marketProjection,
             MarketSort sort, int maxResults, string? locale)
         {
-            if (marketFilter == null) { throw new ArgumentNullException(nameof(marketFilter)); }
-
-            if (maxResults < 0 || maxResults > 1000) { throw new ArgumentOutOfRangeException(nameof(maxResults)); }
+            Guard.Against.Null(marketFilter, nameof(marketFilter));
+            Guard.Against.OutOfRange(maxResults, nameof(maxResults), 0, 1000);
 
             var bodyRequest = new
             {
@@ -159,6 +160,108 @@ namespace BetfairClient.Clients
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/listMarketCatalogue/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<MarketCatalogue>>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<MarketCatalogue>> GetListMarketBook(IEnumerable<string> marketIds, PriceProjection priceProjection,
+            OrderProjection orderProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef,
+            IEnumerable<string> customerStrategyRefs, string? currencyCode, string? locale, DateTime matchedSince, IEnumerable<string> betIds)
+        {
+            Guard.Against.NullOrEmpty(marketIds, nameof(marketIds));
+
+            var bodyRequest = new
+            {
+                MarketIds = marketIds,
+                PriceProjection = priceProjection,
+                OrderProjection = orderProjection,
+                MatchProjection = matchProjection,
+                IncludeOverallPosition = includeOverallPosition,
+                PartitionMatchedByStrategyRef = partitionMatchedByStrategyRef,
+                CustomerStrategyRefs = customerStrategyRefs,
+                CurrencyCode = currencyCode,
+                Locale = locale,
+                MatchedSince = matchedSince,
+                BetIds = betIds
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/listMarketBook/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<IEnumerable<MarketCatalogue>>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<MarketProfitAndLoss>> GetListMarketProfitAndLoss(IEnumerable<string> marketIds, bool includeSettledBets, bool includeBspBets, bool netOfCommission)
+        {
+            Guard.Against.NullOrEmpty(marketIds, nameof(marketIds));
+
+            var bodyRequest = new
+            {
+                MarketIds = marketIds,
+                IncludeSettledBets = includeSettledBets,
+                IncludeBspBets = includeBspBets,
+                NetOfCommission = netOfCommission
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/listMarketProfitAndLoss/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<IEnumerable<MarketProfitAndLoss>>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<CurrentOrderSummaryReport> GetListCurrentOrders(IEnumerable<string> betIds, IEnumerable<string> marketIds, OrderProjection orderProjection,
+            IEnumerable<string> customerOrderRefs, IEnumerable<string> customerStrategyRefs, TimeRange dateRange, OrderBy orderBy, SortDir sortDir, int fromRecord, int recordCount)
+        {
+            var bodyRequest = new
+            {
+                BetIds = betIds,
+                MarketIds = marketIds,
+                OrderProjection = orderProjection,
+                CustomerOrderRefs = customerOrderRefs,
+                CustomerStrategyRefs = customerStrategyRefs,
+                DateRange = dateRange,
+                OrderBy = orderBy,
+                SortDir = sortDir,
+                FromRecord = fromRecord,
+                RecordCount = recordCount
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/listCurrentOrders/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<CurrentOrderSummaryReport>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<ClearedOrderSummaryReport> GetListClearedOrders(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds, 
+            IEnumerable<string> marketIds, IEnumerable<string> runnerIds, IEnumerable<string> betIds, IEnumerable<string> customerOrderRefs, 
+            IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription, 
+            string locale, int fromRecord, int recordCount)
+        {
+            var bodyRequest = new
+            {
+                BetStatus = betStatus,
+                EventTypeIds = eventTypeIds,
+                EventIds = eventIds,
+                MarketIds = marketIds,
+                RunnerIds = runnerIds,
+                BetIds = betIds,
+                CustomerOrderRefs = customerOrderRefs,
+                CustomerStrategyRefs = customerStrategyRefs,
+                Side = side,
+                SettledDateRange = settledDateRange,
+                GroupBy = groupBy,
+                IncludeItemDescription = includeItemDescription,
+                Locale = locale,
+                FromRecord = fromRecord,
+                RecordCount = recordCount
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/listClearedOrders/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<ClearedOrderSummaryReport>(await response.Content.ReadAsStringAsync());
         }
     }
 }
