@@ -1,6 +1,7 @@
 ﻿using BetfairClient.Clients.Interfaces;
 using BetfairClient.Models.Account;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -34,13 +35,8 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<AccountStatementResponse> GetAccountStatement(AccountStatementRequest bodyRequest)
         {
-            var bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{AccountBaseUri}/getAccountStatement/", bodyAsStringContent);
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorObject = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            //}
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{AccountBaseUri}/getAccountStatement/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<AccountStatementResponse>(await response.Content.ReadAsStringAsync());
         }
@@ -48,12 +44,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<AccountDetailsResponse> GetAccountDetails()
         {
-            var response = await _httpClient.GetAsync($"{AccountBaseUri}/getAccountDetails/");
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorObject = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            //}
+            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountBaseUri}/getAccountDetails/");
 
             return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
         }
@@ -61,12 +52,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<AccountDetailsResponse> GetDeveloperApplicationKeys()
         {
-            var response = await _httpClient.GetAsync($"{AccountBaseUri}/getDeveloperAppKeys/");
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorObject = JsonConvert.DeserializeObject<ErrorResponse>(await response.Content.ReadAsStringAsync());
-            //}
+            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountBaseUri}/getDeveloperAppKeys/");
 
             return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
         }

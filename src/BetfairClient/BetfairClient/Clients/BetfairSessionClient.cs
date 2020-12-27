@@ -34,14 +34,15 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<SessionResponse> GetSessionToken(SessionRequest bodyRequest)
         {
-            var httpResponseMessage = await _httpClient.PostAsync(SessionBaseUri, new FormUrlEncodedContent(new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("username", bodyRequest.Username),
-                new KeyValuePair<string, string>("password", bodyRequest.Password)
-            }));
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(SessionBaseUri, 
+        new FormUrlEncodedContent(new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("username", bodyRequest.Username),
+                    new KeyValuePair<string, string>("password", bodyRequest.Password)
+                })
+            );
 
-            SessionResponse response = JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync());
-            return response;
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync());
         }
     }
 }
