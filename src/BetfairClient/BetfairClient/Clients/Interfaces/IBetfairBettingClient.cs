@@ -145,5 +145,48 @@ namespace BetfairClient.Clients.Interfaces
             IEnumerable<string> marketIds, IEnumerable<string> runnerIds, IEnumerable<string> betIds, IEnumerable<string> customerOrderRefs,
             IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription,
             string locale, int fromRecord, int recordCount);
+
+        /// <summary>
+        ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/placeOrders
+        /// </summary>
+        /// <param name="marketId"></param>
+        /// <param name="instructions"></param>
+        /// <param name="customerRef"></param>
+        /// <param name="marketVersion"></param>
+        /// <param name="customerStrategyRef"></param>
+        /// <param name="async"></param>
+        /// <returns></returns>
+        Task<PlaceExecutionReport> PlaceOrders(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef,
+            MarketVersion marketVersion, string customerStrategyRef, bool @async);
+
+        /// <summary>
+        ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/cancelOrders
+        /// </summary>
+        /// <param name="marketId"></param>
+        /// <param name="instructions"></param>
+        /// <param name="customerRef"></param>
+        /// <returns></returns>
+        Task<CancelExecutionReport> CancelOrders(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef);
+
+        /// <summary>
+        ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/replaceOrders
+        /// </summary>
+        /// <param name="marketId"></param>
+        /// <param name="instructions"></param>
+        /// <param name="customerRef"></param>
+        /// <param name="marketVersion"></param>
+        /// <param name="async"></param>
+        /// <returns></returns>
+        Task<ReplaceExecutionReport> ReplaceOrders(string marketId, IEnumerable<ReplaceInstruction> instructions,
+            string customerRef, MarketVersion marketVersion, bool @async);
+
+        /// <summary>
+        ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/updateOrders
+        /// </summary>
+        /// <param name="marketId"></param>
+        /// <param name="instructions"></param>
+        /// <param name="customerRef"></param>
+        /// <returns></returns>
+        Task<UpdateExecutionReport> UpdateOrders(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef);
     }
 }

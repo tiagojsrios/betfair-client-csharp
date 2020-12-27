@@ -263,5 +263,79 @@ namespace BetfairClient.Clients
 
             return JsonSerializer.Deserialize<ClearedOrderSummaryReport>(await response.Content.ReadAsStringAsync());
         }
+
+        /// <inheritdoc/>
+        public async Task<PlaceExecutionReport> PlaceOrders(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef, 
+            MarketVersion marketVersion, string customerStrategyRef, bool @async)
+        {
+            var bodyRequest = new
+            {
+                MarketId = marketId,
+                Instructions = instructions,
+                CustomerRef = customerRef,
+                MarketVersion = marketVersion,
+                CustomerStrategyRef = customerStrategyRef,
+                Async = @async
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/placeOrders/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<PlaceExecutionReport>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<CancelExecutionReport> CancelOrders(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef)
+        {
+            var bodyRequest = new
+            {
+                MarketId = marketId,
+                Instructions = instructions,
+                CustomerRef = customerRef
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/cancelOrders/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<CancelExecutionReport>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<ReplaceExecutionReport> ReplaceOrders(string marketId, IEnumerable<ReplaceInstruction> instructions, 
+            string customerRef, MarketVersion marketVersion, bool @async)
+        {
+            var bodyRequest = new
+            {
+                MarketId = marketId,
+                Instructions = instructions,
+                CustomerRef = customerRef,
+                MarketVersion = marketVersion,
+                Async = @async
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/replaceOrders/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<ReplaceExecutionReport>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc/>
+        public async Task<UpdateExecutionReport> UpdateOrders(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef)
+        {
+            Guard.Against.NullOrEmpty(marketId, nameof(marketId));
+            Guard.Against.NullOrEmpty(instructions, nameof(instructions));
+
+            var bodyRequest = new
+            {
+                MarketId = marketId,
+                Instructions = instructions,
+                CustomerRef = customerRef
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingBaseUri}/replaceOrders/", bodyAsStringContent);
+
+            return JsonSerializer.Deserialize<UpdateExecutionReport>(await response.Content.ReadAsStringAsync());
+        }
     }
 }
