@@ -6,9 +6,9 @@ Unofficial .NET Core 3.1 Betfair REST API HTTP client. The official documentatio
 
 |             | Base Address | Supported | Will it be supported? |
 | :---        |    :----:    |   :---:   |         :---:         |
-| [**Session**](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Accounts+API) |    https://identitysso.betfair.com/api/login | Yes    |          -         |
-| [**Account**](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Accounts+API) |    https://api.betfair.com/exchange/ | Yes    |          -         |
-| [**Betting**](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Betting+API)  |    https://api.betfair.com/exchange/ | Yes    |          -         |
+| [**Session**](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Accounts+API) |    https://identitysso.betfair.com/ | Yes    |          -         |
+| [**Account**](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Accounts+API) |    https://api.betfair.com/ | Yes    |          -         |
+| [**Betting**](https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Betting+API)  |    https://api.betfair.com/ | Yes    |          -         |
 
 Base Address's column contains the base urls that can be used to configure the HttpClient. I refered the internacional exchange ones (.com), however you can use other ones as you may know. Please refer to the official documentation for more information.
 

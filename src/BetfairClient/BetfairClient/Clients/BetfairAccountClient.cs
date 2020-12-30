@@ -20,7 +20,7 @@ namespace BetfairClient.Clients
         /// <summary>
         ///     Account Base Uri
         /// </summary>
-        private static readonly string AccountBaseUri = "account/rest/v1.0";
+        private static readonly string AccountUri = "exchange/account/rest/v1.0";
 
         /// <summary>
         ///     Http client
@@ -52,7 +52,7 @@ namespace BetfairClient.Clients
             }
 
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{AccountBaseUri}/getAccountStatement/", bodyAsStringContent);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{AccountUri}/getAccountStatement/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<AccountStatementResponse>(await response.Content.ReadAsStringAsync());
         }
@@ -65,7 +65,7 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountBaseUri}/getAccountDetails/");
+            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getAccountDetails/");
 
             return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
         }
@@ -78,7 +78,7 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountBaseUri}/getDeveloperAppKeys/");
+            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getDeveloperAppKeys/");
 
             return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
         }

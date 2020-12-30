@@ -15,7 +15,7 @@ namespace BetfairClient.Clients
         /// <summary>
         ///     Session Base Uri
         /// </summary>
-        private static readonly string SessionBaseUri = "api/login";
+        private static readonly string SessionUri = "api/login";
 
         /// <summary>
         ///     Http client
@@ -34,7 +34,7 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<SessionResponse> GetSessionToken(SessionRequest bodyRequest)
         {
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(SessionBaseUri, 
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(SessionUri, 
         new FormUrlEncodedContent(new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("username", bodyRequest.Username),
