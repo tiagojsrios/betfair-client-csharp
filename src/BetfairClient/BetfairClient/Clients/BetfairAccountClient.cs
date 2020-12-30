@@ -1,5 +1,9 @@
 ﻿using BetfairClient.Clients.Interfaces;
+using BetfairClient.Helpers;
 using BetfairClient.Models.Account;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -33,8 +37,20 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc/>
+        public IBetfairAccountClient AddAuthenticationHeader(string authenticationHeader)
+        {
+            _httpClient.DefaultRequestHeaders.Add(BetfairConstants.AuthenticationHeaderName, authenticationHeader);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public async Task<AccountStatementResponse> GetAccountStatement(AccountStatementRequest bodyRequest)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{AccountBaseUri}/getAccountStatement/", bodyAsStringContent);
 
@@ -44,6 +60,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<AccountDetailsResponse> GetAccountDetails()
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             HttpResponseMessage response = await _httpClient.GetAsync($"{AccountBaseUri}/getAccountDetails/");
 
             return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
@@ -52,9 +73,24 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<AccountDetailsResponse> GetDeveloperApplicationKeys()
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             HttpResponseMessage response = await _httpClient.GetAsync($"{AccountBaseUri}/getDeveloperAppKeys/");
 
             return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
+        }
+
+        /// <summary>
+        ///     Validates if <see cref="BetfairConstants.AuthenticationHeaderName"/> exists and if it isn't either null or empty
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateAuthenticationHeader()
+        {
+            return _httpClient.DefaultRequestHeaders.TryGetValues(BetfairConstants.AuthenticationHeaderName, out IEnumerable<string> headerValues) 
+                && headerValues.FirstOrDefault(x => !string.IsNullOrEmpty(x)) != null;
         }
     }
 }

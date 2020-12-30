@@ -9,6 +9,13 @@ namespace BetfairClient.Clients.Interfaces
     public interface IBetfairAccountClient
     {
         /// <summary>
+        ///     Adds X-Authentication header needed to request Betfair API
+        /// </summary>
+        /// <param name="authenticationHeader"></param>
+        /// <returns></returns>
+        IBetfairAccountClient AddAuthenticationHeader(string authenticationHeader);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="bodyRequest"></param>

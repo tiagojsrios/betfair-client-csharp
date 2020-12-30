@@ -36,6 +36,13 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc/>
+        public IBetfairBettingClient AddAuthenticationHeader(string authenticationHeader)
+        {
+            _httpClient.DefaultRequestHeaders.Add("X-Authentication", authenticationHeader);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public async Task<EventTypes> GetListEventTypes(MarketFilter marketFilter)
         {
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter), Encoding.UTF8, MediaTypeNames.Application.Json);

@@ -11,6 +11,13 @@ namespace BetfairClient.Clients.Interfaces
     public interface IBetfairBettingClient
     {
         /// <summary>
+        ///     Adds X-Authentication header needed to request Betfair API
+        /// </summary>
+        /// <param name="authenticationHeader"></param>
+        /// <returns></returns>
+        IBetfairBettingClient AddAuthenticationHeader(string authenticationHeader);
+
+        /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listEventTypes
         /// </summary>
         /// <param name="marketFilter"></param>
