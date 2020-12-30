@@ -45,8 +45,29 @@ public class Example
 
 This example can be applied to correctly use the other clients.
 
-## Remarks about way of working
+## What is X-Authentication header?
 
-- There are some endpoints that require X-Authentication header. Its value should be the session token retrieved after a successful call made to the login endpoint.
-  - Whenever this is an endpoint requirement by Betfair, the code will check if the header exists and isn't null or empty.
+Most of endpoints require the **X-Authentication** header to be set. Its value should be the session token retrieved after a successful call made to the login endpoint. All clients provide the method *AddAuthenticationHeader(string authenticationHeader)*, 
+
+```csharp
+public class Example
+{
+    private readonly IBetfairAccountClient _client;
+
+    public Example(IBetfairAccountClient client)
+    {
+        _client = client;
+    }
+    
+    public async Task<object> ExampleCall()
+    {
+        return await _client.AddAuthenticationHeader("YourAuthenticationTokenValue").GetAccountDetails();
+    }
+}
+```
+The method returns its own Client, so you can call it as a chain of executable methods.
+**Important remark:** Whenever this is an endpoint requirement by Betfair, the code will check if the header exists and isn't null or empty.
+
+## Other remarks about way of working
+
 - Betfair's session token is valid for 24 hours, if using the international (.com) exchange. More information can be found [here](https://docs.developer.betfair.com/pages/viewpage.action?pageId=3834909).
