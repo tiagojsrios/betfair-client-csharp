@@ -3,6 +3,7 @@ using BetfairClient.Models.Session;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BetfairClient.Clients
@@ -12,6 +13,11 @@ namespace BetfairClient.Clients
     /// </summary>
     public class BetfairSessionClient : IBetfairSessionClient
     {
+        /// <summary>
+        ///     Json serializer options
+        /// </summary>
+        private static JsonSerializerOptions _jsonSerializerOptions;
+
         /// <summary>
         ///     Session Base Uri
         /// </summary>
@@ -29,6 +35,12 @@ namespace BetfairClient.Clients
         public BetfairSessionClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+
+            _jsonSerializerOptions = new JsonSerializerOptions()
+            { 
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <inheritdoc/>
@@ -42,7 +54,7 @@ namespace BetfairClient.Clients
                 })
             );
 
-            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync());
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BetfairClient.Clients
@@ -17,6 +18,11 @@ namespace BetfairClient.Clients
     /// </summary>
     public class BetfairAccountClient : IBetfairAccountClient
     {
+        /// <summary>
+        ///     Json serializer options
+        /// </summary>
+        private static JsonSerializerOptions _jsonSerializerOptions;
+
         /// <summary>
         ///     Account Base Uri
         /// </summary>
@@ -34,6 +40,12 @@ namespace BetfairClient.Clients
         public BetfairAccountClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+
+            _jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <inheritdoc/>
@@ -54,7 +66,7 @@ namespace BetfairClient.Clients
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{AccountUri}/getAccountStatement/", bodyAsStringContent);
 
-            return JsonSerializer.Deserialize<AccountStatementResponse>(await response.Content.ReadAsStringAsync());
+            return JsonSerializer.Deserialize<AccountStatementResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
         }
 
         /// <inheritdoc/>
@@ -67,7 +79,7 @@ namespace BetfairClient.Clients
 
             HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getAccountDetails/");
 
-            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
+            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
         }
 
         /// <inheritdoc/>
@@ -80,7 +92,7 @@ namespace BetfairClient.Clients
 
             HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getDeveloperAppKeys/");
 
-            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync());
+            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
         }
 
         /// <summary>
