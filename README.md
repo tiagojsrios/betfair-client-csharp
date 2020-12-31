@@ -20,7 +20,7 @@ Depending on which API from Betfair you want to use, you need to register the cl
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddBetfairSessionClient((client) => {
-        client.BaseAddress = "BaseSessionAddress";
+        client.BaseAddress = new Uri("BaseSessionAddress");
         client.DefaultRequestHeaders.Add("Accept", "application/json");
         client.DefaultRequestHeaders.Add("X-Application", "YourApplicationToken");
     });
