@@ -5,12 +5,12 @@
     /// </summary>
     public enum RunnerStatus
     {
-        Active,
-        Winner,
-        Loser,
-        Placed,
-        RemovedVacant,
-        Removed,
-        Hidden
+        ACTIVE,
+        WINNER,
+        LOSER,
+        PLACED,
+        REMOVED_VACANT,
+        REMOVED,
+        HIDDEN
     }
 }

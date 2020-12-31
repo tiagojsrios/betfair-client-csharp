@@ -5,9 +5,9 @@
     /// </summary>
     public enum RollupModel
     {
-        Stake,
-        Payout,
-        ManagedLiability,
-        None
+        STAKE,
+        PAYOUT,
+        MANAGED_LIABILITY,
+        NONE
     }
 }

@@ -8,21 +8,21 @@
         /// <summary>
         /// 
         /// </summary>
-        Success,
+        SUCCESS,
 
         /// <summary>
         /// 
         /// </summary>
-        LimitedAccess,
+        LIMITED_ACCESS,
 
         /// <summary>
         /// 
         /// </summary>
-        LoginRestricted,
+        LOGIN_RESTRICTED,
         
         /// <summary>
         /// 
         /// </summary>
-        Fail
+        FAIL
     }
 }

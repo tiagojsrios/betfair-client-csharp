@@ -5,8 +5,8 @@
     /// </summary>
     public enum MatchProjection
     {
-        NoRollup,
-        RolledUpByPrice,
-        RolledUpByAvgPrice
+        NO_ROLLUP,
+        ROLLED_UP_BY_PRICE,
+        ROLLED_UP_BY_AVG_PRICE
     }
 }

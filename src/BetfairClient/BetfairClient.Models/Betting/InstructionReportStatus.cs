@@ -5,8 +5,8 @@
     /// </summary>
     public enum InstructionReportStatus
     {
-        Success,
-        Failure,
-        Timeout
+        SUCCESS,
+        FAILURE,
+        TIMEOUT
     }
 }

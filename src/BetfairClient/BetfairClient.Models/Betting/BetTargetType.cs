@@ -2,7 +2,7 @@
 {
     public enum BetTargetType
     {
-        Payout,
-        BackersProfit
+        PAYOUT,
+        BACKERS_PROFIT
     }
 }

@@ -5,8 +5,8 @@
     /// </summary>
     public enum OrderType
     {
-        Limit,
-        LimitOnClose,
-        MarketOnClose
+        LIMIT,
+        LIMIT_ON_CLOSE,
+        MARKET_ON_CLOSE
     }
 }

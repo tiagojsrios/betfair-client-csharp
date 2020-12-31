@@ -5,11 +5,11 @@
     /// </summary>
     public enum MarketBettingType
     {
-        Odds,
-        Line,
-        Range,
-        AsianHandicapSingleLine,
-        AsianHandicapDoubleLine,
-        FixedOdds
+        ODDS,
+        LINE,
+        RANGE,
+        ASIAN_HANDICAP_SINGLE_LINE,
+        ASIAN_HANDICAP_DOUBLE_LINE,
+        FIXED_ODDS
     }
 }

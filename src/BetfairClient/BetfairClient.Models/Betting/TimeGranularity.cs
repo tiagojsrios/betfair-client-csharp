@@ -8,16 +8,16 @@
         /// <summary>
         /// 
         /// </summary>
-        Days,
+        DAYS,
 
         /// <summary>
         /// 
         /// </summary>
-        Hours,
+        HOURS,
 
         /// <summary>
         /// 
         /// </summary>
-        Minutes
+        MINUTES
     }
 }

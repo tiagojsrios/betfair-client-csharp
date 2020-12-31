@@ -5,8 +5,8 @@
     /// </summary>
     public enum PersistenceType
     {
-        Lapse,
-        Persist,
-        MarketOnClose
+        LAPSE,
+        PERSIST,
+        MARKET_ON_CLOSE
     }
 }

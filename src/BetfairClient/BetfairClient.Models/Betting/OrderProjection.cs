@@ -5,8 +5,8 @@
     /// </summary>
     public enum OrderProjection
     {
-        All,
-        Executable,
-        ExecutionComplete
+        ALL,
+        EXECUTABLE,
+        EXECUTION_COMPLETE
     }
 }

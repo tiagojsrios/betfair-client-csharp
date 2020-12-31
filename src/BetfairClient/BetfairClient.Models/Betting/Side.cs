@@ -5,7 +5,7 @@
     /// </summary>
     public enum Side
     {
-        Back,
-        Lay
+        BACK,
+        LAY
     }
 }

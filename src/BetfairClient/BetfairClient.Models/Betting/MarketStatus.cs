@@ -5,9 +5,9 @@
     /// </summary>
     public enum MarketStatus
     {
-        Inactive,
-        Open,
-        Suspended,
-        Closed
+        INACTIVE,
+        OPEN,
+        SUSPENDED,
+        CLOSED
     }
 }

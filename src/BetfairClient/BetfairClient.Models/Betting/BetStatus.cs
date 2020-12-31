@@ -5,9 +5,9 @@
     /// </summary>
     public enum BetStatus
     {
-        Settled,
-        Voided,
-        Lapsed,
-        Cancelled
+        SETTLED,
+        VOIDED,
+        LAPSED,
+        CANCELLED
     }
 }

@@ -5,9 +5,9 @@
     /// </summary>
     public enum ExecutionReportStatus
     {
-        Success,
-        Failure,
-        ProcessedWithErrors,
-        Timeout
+        SUCCESS,
+        FAILURE,
+        PROCESSED_WITH_ERRORS,
+        TIMEOUT
     }
 }

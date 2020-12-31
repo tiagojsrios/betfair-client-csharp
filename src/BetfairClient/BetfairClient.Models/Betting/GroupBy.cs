@@ -5,10 +5,10 @@
     /// </summary>
     public enum GroupBy
     {
-        EventType,
-        Event,
-        Market,
-        Side,
-        Bet
+        EVENT_TYPE,
+        EVENT,
+        MARKET,
+        SIDE,
+        BET
     }
 }

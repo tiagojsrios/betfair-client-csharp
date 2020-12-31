@@ -5,12 +5,12 @@
     /// </summary>
     public enum MarketProjection
     {
-        Competition,
-        Event,
-        EventType,
-        MarketStartTime,
-        MarketDescription,
-        RunnerDescription,
-        RunnerMetadata
+        COMPETITION,
+        EVENT,
+        EVENT_TYPE,
+        MARKET_START_TIME,
+        MARKET_DESCRIPTION,
+        RUNNER_DESCRIPTION,
+        RUNNER_METADATA
     }
 }

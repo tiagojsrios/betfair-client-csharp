@@ -5,7 +5,7 @@
     /// </summary>
     public enum SortDir
     {
-        EarliestToLatest,
-        LatestToEarliest
+        EARLIEST_TO_LATEST,
+        LATEST_TO_EARLIEST
     }
 }

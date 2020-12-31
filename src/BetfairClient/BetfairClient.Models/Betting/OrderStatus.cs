@@ -5,9 +5,9 @@
     /// </summary>
     public enum OrderStatus
     {
-        Pending,
-        ExecutionComplete,
-        Executable,
-        Expired
+        PENDING,
+        EXECUTION_COMPLETE,
+        EXECUTABLE,
+        EXPIRED
     }
 }

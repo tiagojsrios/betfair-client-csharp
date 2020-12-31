@@ -5,6 +5,6 @@
     /// </summary>
     public enum TimeInForce
     {
-        FillOrKill
+        FILL_OR_KILL
     }
 }
