@@ -435,7 +435,6 @@ namespace BetfairClient.Clients
             return JsonSerializer.Deserialize<UpdateExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
         }
 
-
         /// <summary>
         ///     Validates if <see cref="BetfairConstants.AuthenticationHeaderName"/> exists and if it isn't either null or empty
         /// </summary>

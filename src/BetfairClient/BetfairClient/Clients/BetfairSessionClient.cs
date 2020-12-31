@@ -1,6 +1,9 @@
 ﻿using BetfairClient.Clients.Interfaces;
+using BetfairClient.Helpers;
 using BetfairClient.Models.Session;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -24,6 +27,16 @@ namespace BetfairClient.Clients
         private static readonly string SessionUri = "api/login";
 
         /// <summary>
+        ///     Session Base Uri
+        /// </summary>
+        private static readonly string KeepAliveUri = "api/keepAlive";
+
+        /// <summary>
+        ///     Session Base Uri
+        /// </summary>
+        private static readonly string LogoutUri = "api/logout";
+
+        /// <summary>
         ///     Http client
         /// </summary>
         private readonly HttpClient _httpClient;
@@ -44,6 +57,13 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc/>
+        public IBetfairSessionClient AddAuthenticationHeader(string authenticationHeader)
+        {
+            _httpClient.DefaultRequestHeaders.Add("X-Authentication", authenticationHeader);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public async Task<SessionResponse> GetSessionToken(SessionRequest bodyRequest)
         {
             HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(SessionUri, 
@@ -55,6 +75,40 @@ namespace BetfairClient.Clients
             );
 
             return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+        }
+
+        /// <inheritdoc/>
+        public async Task<SessionResponse> KeepAlive()
+        {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
+            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(KeepAliveUri);
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+        }
+
+        /// <inheritdoc/>
+        public async Task<SessionResponse> Logout()
+        {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
+            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(LogoutUri);
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+        }
+
+        /// <summary>
+        ///     Validates if <see cref="BetfairConstants.AuthenticationHeaderName"/> exists and if it isn't either null or empty
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateAuthenticationHeader()
+        {
+            return _httpClient.DefaultRequestHeaders.TryGetValues(BetfairConstants.AuthenticationHeaderName, out IEnumerable<string> headerValues)
+                && headerValues.FirstOrDefault(x => !string.IsNullOrEmpty(x)) != null;
         }
     }
 }
