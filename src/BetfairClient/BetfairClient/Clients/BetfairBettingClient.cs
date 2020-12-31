@@ -1,8 +1,10 @@
 ﻿using Ardalis.GuardClauses;
 using BetfairClient.Clients.Interfaces;
+using BetfairClient.Helpers;
 using BetfairClient.Models.Betting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -45,6 +47,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<EventTypes> GetListEventTypes(MarketFilter marketFilter)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEventTypes/", bodyAsStringContent);
 
@@ -54,6 +61,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<CompetitionResult> GetListCompetitions(MarketFilter marketFilter)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCompetitions/", bodyAsStringContent);
 
@@ -63,6 +75,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<TimeRangeResult>> GetListTimeRanges(MarketFilter marketFilter, TimeGranularity timeGranularity)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             var bodyRequest = new
             {
                 Filter = marketFilter,
@@ -78,6 +95,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<EventResult>> GetListEvents(MarketFilter marketFilter, string? locale)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
@@ -95,6 +117,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<MarketTypeResult>> GetListMarketTypes(MarketFilter marketFilter, string? locale)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
@@ -112,6 +139,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<CountryCodeResult>> GetListCountries(MarketFilter marketFilter, string? locale)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
@@ -129,6 +161,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<VenueResult>> GetListVenues(MarketFilter marketFilter, string? locale)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
@@ -147,6 +184,11 @@ namespace BetfairClient.Clients
         public async Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogue(MarketFilter marketFilter, IEnumerable<MarketProjection> marketProjection,
             MarketSort sort, int maxResults, string? locale)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.Null(marketFilter, nameof(marketFilter));
             Guard.Against.OutOfRange(maxResults, nameof(maxResults), 0, 1000);
 
@@ -170,6 +212,11 @@ namespace BetfairClient.Clients
             OrderProjection orderProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef,
             IEnumerable<string> customerStrategyRefs, string? currencyCode, string? locale, DateTime matchedSince, IEnumerable<string> betIds)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.NullOrEmpty(marketIds, nameof(marketIds));
 
             var bodyRequest = new
@@ -196,6 +243,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<IEnumerable<MarketProfitAndLoss>> GetListMarketProfitAndLoss(IEnumerable<string> marketIds, bool includeSettledBets, bool includeBspBets, bool netOfCommission)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.NullOrEmpty(marketIds, nameof(marketIds));
 
             var bodyRequest = new
@@ -216,6 +268,11 @@ namespace BetfairClient.Clients
         public async Task<CurrentOrderSummaryReport> GetListCurrentOrders(IEnumerable<string> betIds, IEnumerable<string> marketIds, OrderProjection orderProjection,
             IEnumerable<string> customerOrderRefs, IEnumerable<string> customerStrategyRefs, TimeRange dateRange, OrderBy orderBy, SortDir sortDir, int fromRecord, int recordCount)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             var bodyRequest = new
             {
                 BetIds = betIds,
@@ -242,6 +299,11 @@ namespace BetfairClient.Clients
             IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription, 
             string locale, int fromRecord, int recordCount)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             var bodyRequest = new
             {
                 BetStatus = betStatus,
@@ -271,6 +333,11 @@ namespace BetfairClient.Clients
         public async Task<PlaceExecutionReport> PlaceOrders(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef, 
             MarketVersion marketVersion, string customerStrategyRef, bool @async)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             var bodyRequest = new
             {
                 MarketId = marketId,
@@ -290,6 +357,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<CancelExecutionReport> CancelOrders(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             var bodyRequest = new
             {
                 MarketId = marketId,
@@ -307,6 +379,11 @@ namespace BetfairClient.Clients
         public async Task<ReplaceExecutionReport> ReplaceOrders(string marketId, IEnumerable<ReplaceInstruction> instructions, 
             string customerRef, MarketVersion marketVersion, bool @async)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             var bodyRequest = new
             {
                 MarketId = marketId,
@@ -325,6 +402,11 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public async Task<UpdateExecutionReport> UpdateOrders(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef)
         {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
             Guard.Against.NullOrEmpty(marketId, nameof(marketId));
             Guard.Against.NullOrEmpty(instructions, nameof(instructions));
 
@@ -339,6 +421,17 @@ namespace BetfairClient.Clients
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<UpdateExecutionReport>(await response.Content.ReadAsStringAsync());
+        }
+
+
+        /// <summary>
+        ///     Validates if <see cref="BetfairConstants.AuthenticationHeaderName"/> exists and if it isn't either null or empty
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateAuthenticationHeader()
+        {
+            return _httpClient.DefaultRequestHeaders.TryGetValues(BetfairConstants.AuthenticationHeaderName, out IEnumerable<string> headerValues)
+                && headerValues.FirstOrDefault(x => !string.IsNullOrEmpty(x)) != null;
         }
     }
 }
