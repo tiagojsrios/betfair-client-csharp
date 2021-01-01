@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>BetfairClient</id>
+        <version>1.0.0</version>
+        <title>Betfair API Client</title>
+        <authors>Tiago Rios</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <projectUrl>https://github.com/tiagojsrios/betfair-client-csharp/</projectUrl>
+        <repository type="git" url="https://github.com/tiagojsrios/betfair-client-csharp/"/>
+        <description>Betfair API HTTP client wrapper for .NET Core 3.1</description>
+        <releaseNotes>Support for Session, Account and Betting APIs.</releaseNotes>
+        <tags>Betfair Betting Exchange Sports</tags>
+        <dependencies>
+            <group targetFramework="netcoreapp3.1">
+                <dependency id="Ardalis.GuardClauses" version="3.0.1" />
+                <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="3.1.10" />
+                <dependency id="Microsoft.Extensions.Http" version="3.1.10" />
+            </group>
+        </dependencies>
+    </metadata>
+</package>
