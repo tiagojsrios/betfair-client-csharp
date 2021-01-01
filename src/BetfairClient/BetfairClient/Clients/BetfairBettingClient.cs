@@ -44,7 +44,8 @@ namespace BetfairClient.Clients
 
             _jsonSerializerOptions = new JsonSerializerOptions()
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                IgnoreNullValues = true
             };
             _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
@@ -64,7 +65,7 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEventTypes/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<EventTypes>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -78,7 +79,7 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCompetitions/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<CompetitionResult>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -98,7 +99,7 @@ namespace BetfairClient.Clients
                 Granularity = timeGranularity
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listTimeRanges/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<TimeRangeResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -112,15 +113,13 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            Guard.Against.Null(marketFilter, nameof(marketFilter));
-
             var bodyRequest = new
             {
                 Filter = marketFilter,
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEvents/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<EventResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -142,7 +141,7 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketTypes/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<MarketTypeResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -164,7 +163,7 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCountries/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<CountryCodeResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -186,7 +185,7 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listVenues/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<VenueResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -213,7 +212,7 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketCatalogue/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<MarketCatalogue>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -246,7 +245,7 @@ namespace BetfairClient.Clients
                 BetIds = betIds
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketBook/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<MarketCatalogue>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -270,7 +269,7 @@ namespace BetfairClient.Clients
                 NetOfCommission = netOfCommission
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketProfitAndLoss/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<IEnumerable<MarketProfitAndLoss>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -299,7 +298,7 @@ namespace BetfairClient.Clients
                 RecordCount = recordCount
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCurrentOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<CurrentOrderSummaryReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -335,7 +334,7 @@ namespace BetfairClient.Clients
                 RecordCount = recordCount
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listClearedOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<ClearedOrderSummaryReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -360,7 +359,7 @@ namespace BetfairClient.Clients
                 Async = @async
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/placeOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<PlaceExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -381,7 +380,7 @@ namespace BetfairClient.Clients
                 CustomerRef = customerRef
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/cancelOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<CancelExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -405,7 +404,7 @@ namespace BetfairClient.Clients
                 Async = @async
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<ReplaceExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
@@ -429,7 +428,7 @@ namespace BetfairClient.Clients
                 CustomerRef = customerRef
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<UpdateExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);

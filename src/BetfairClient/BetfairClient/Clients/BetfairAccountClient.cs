@@ -43,7 +43,8 @@ namespace BetfairClient.Clients
 
             _jsonSerializerOptions = new JsonSerializerOptions()
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                IgnoreNullValues = true
             };
             _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
@@ -63,7 +64,7 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest), Encoding.UTF8, MediaTypeNames.Application.Json);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{AccountUri}/getAccountStatement/", bodyAsStringContent);
 
             return JsonSerializer.Deserialize<AccountStatementResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);

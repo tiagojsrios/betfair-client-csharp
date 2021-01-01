@@ -19,11 +19,11 @@ namespace BetfairClient.Models.Betting
 
         public IEnumerable<string> Venues { get; set; }
 
-        public bool BspOnly { get; set; }
+        public bool? BspOnly { get; set; }
 
-        public bool TurnInPlayEnabled { get; set; }
+        public bool? TurnInPlayEnabled { get; set; }
 
-        public bool InPlayOnly { get; set; }
+        public bool? InPlayOnly { get; set; }
 
         public IEnumerable<MarketBettingType> MarketBettingTypes { get; set; }
 
