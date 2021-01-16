@@ -17,7 +17,7 @@ namespace BetfairClient.Models.Account
 
         public string CommissionRate { get; set; }
 
-        public string EventId { get; set; }
+        public long EventId { get; set; }
 
         public long EventIdType { get; set; }
 
