@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>BetfairClient</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <title>Betfair API Client</title>
     <authors>Tiago Rios</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,7 +11,7 @@
     <repository type="git" url="https://github.com/tiagojsrios/betfair-client-csharp/"/>
     <description>Betfair API HTTP client wrapper for .NET Core 3.1</description>
     <copyright>Copyright (c) 2021 Tiago Rios</copyright>
-    <releaseNotes>Fixed issue where authentication header was always being added, even if it was already there</releaseNotes>
+    <releaseNotes>Fixed broken code from last release</releaseNotes>
     <tags>Betfair Betting Exchange Sports</tags>
     <dependencies>
         <dependency id="Ardalis.GuardClauses" version="3.0.1" />
