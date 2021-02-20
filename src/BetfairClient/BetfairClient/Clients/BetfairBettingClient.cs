@@ -53,7 +53,21 @@ namespace BetfairClient.Clients
         /// <inheritdoc/>
         public IBetfairBettingClient AddAuthenticationHeader(string authenticationHeader)
         {
-            _httpClient.DefaultRequestHeaders.Add("X-Authentication", authenticationHeader);
+            string currentAuthenticationHeaderValue = _httpClient.DefaultRequestHeaders.GetValues(BetfairConstants.AuthenticationHeaderName).FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(currentAuthenticationHeaderValue))
+            {
+                if (authenticationHeader != currentAuthenticationHeaderValue)
+                {
+                    _httpClient.DefaultRequestHeaders.Remove(BetfairConstants.AuthenticationHeaderName);
+                }
+                else
+                {
+                    return this;
+                }
+            }
+
+            _httpClient.DefaultRequestHeaders.Add(BetfairConstants.AuthenticationHeaderName, authenticationHeader);
             return this;
         }
 
