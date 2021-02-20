@@ -54,7 +54,7 @@ namespace BetfairClient.Clients
         public IBetfairBettingClient AddAuthenticationHeader(string authenticationHeader)
         {
             bool hasHeader = _httpClient.DefaultRequestHeaders.TryGetValues(BetfairConstants.AuthenticationHeaderName, out IEnumerable<string> values);
-            string currentAuthenticationHeaderValue = values.FirstOrDefault();
+            string currentAuthenticationHeaderValue = values?.FirstOrDefault();
 
             if (hasHeader && !string.IsNullOrEmpty(currentAuthenticationHeaderValue))
             {
