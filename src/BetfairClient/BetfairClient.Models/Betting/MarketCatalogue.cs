@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,36 +8,22 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class MarketCatalogue
     {
-        public string TextQuery { get; set; }
+        public string MarketId { get; set; }
 
-        public IEnumerable<string> ExchangeIds { get; set; }
+        public string MarketName { get; set; }
 
-        public IEnumerable<string> EventTypeIds { get; set; }
+        public DateTime MarketStartTime { get; set; }
 
-        public IEnumerable<string> EventIds { get; set; }
+        public MarketDescription Description { get; set; }
 
-        public IEnumerable<string> CompetitionIds { get; set; }
+        public double TotalMatched { get; set; }
 
-        public IEnumerable<string> MarketIds { get; set; }
+        public IEnumerable<RunnerCatalog> Runners { get; set; }
 
-        public IEnumerable<string> Venues { get; set; }
+        public EventType EventType { get; set; }
 
-        public bool BspOnly { get; set; }
+        public Competition Competition { get; set; }
 
-        public bool TurnInPlayEnabled { get; set; }
-
-        public bool InPlayOnly { get; set; }
-
-        public IEnumerable<MarketBettingType> MarketBettingTypes { get; set; }
-
-        public IEnumerable<string> MarketCountries { get; set; }
-
-        public IEnumerable<string> MarketTypeCodes { get; set; }
-
-        public TimeRange MarketStartTime { get; set; }
-
-        public IEnumerable<OrderStatus> WithOrders { get; set; }
-
-        public IEnumerable<string> RaceTypes { get; set; }
+        public Event Event { get; set; }
     }
 }

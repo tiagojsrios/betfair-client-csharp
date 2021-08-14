@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient", "BetfairCli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient.Models", "BetfairClient.Models\BetfairClient.Models.csproj", "{57DEFCA1-EFA3-4F90-910C-1DD59ADEFB54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetfairClient.UnitTests", "BetfairClient.UnitTests\BetfairClient.UnitTests.csproj", "{F453B609-3980-4343-9B3C-261A95F825D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient.UnitTests", "BetfairClient.UnitTests\BetfairClient.UnitTests.csproj", "{F453B609-3980-4343-9B3C-261A95F825D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient.TestClass", "BetfairClient.TestClass\BetfairClient.TestClass.csproj", "{ACBA4361-9833-4C4C-B8B8-233A37148BE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F453B609-3980-4343-9B3C-261A95F825D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F453B609-3980-4343-9B3C-261A95F825D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F453B609-3980-4343-9B3C-261A95F825D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACBA4361-9833-4C4C-B8B8-233A37148BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBA4361-9833-4C4C-B8B8-233A37148BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBA4361-9833-4C4C-B8B8-233A37148BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBA4361-9833-4C4C-B8B8-233A37148BE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
