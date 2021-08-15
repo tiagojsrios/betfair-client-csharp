@@ -19,7 +19,12 @@ namespace BetfairClient.Clients
         /// <summary>
         ///     Json serializer options
         /// </summary>
-        private static JsonSerializerOptions _jsonSerializerOptions;
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            IgnoreNullValues = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
 
         /// <summary>
         ///     Session Base Uri
@@ -48,12 +53,6 @@ namespace BetfairClient.Clients
         public BetfairSessionClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-
-            _jsonSerializerOptions = new JsonSerializerOptions()
-            { 
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
-            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <inheritdoc/>
@@ -78,42 +77,42 @@ namespace BetfairClient.Clients
             return this;
         }
 
-        /// <inheritdoc/>
-        public async Task<SessionResponse> GetSessionToken(SessionRequest bodyRequest)
+        /// <inheritdoc cref="IBetfairSessionClient.GetSessionTokenAsync"/>
+        public async Task<SessionResponse> GetSessionTokenAsync(SessionRequest bodyRequest)
         {
             HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync(SessionUri, 
-        new FormUrlEncodedContent(new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("username", bodyRequest.Username),
-                    new KeyValuePair<string, string>("password", bodyRequest.Password)
-                })
-            );
+                new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                    {
+                        new KeyValuePair<string, string>("username", bodyRequest.Username),
+                        new KeyValuePair<string, string>("password", bodyRequest.Password)
+                    })
+            ).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<SessionResponse> KeepAlive()
+        /// <inheritdoc cref="IBetfairSessionClient.KeepAliveAsync"/>
+        public async Task<SessionResponse> KeepAliveAsync()
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(KeepAliveUri);
-            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(KeepAliveUri).ConfigureAwait(false);
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<SessionResponse> Logout()
+        /// <inheritdoc cref="IBetfairSessionClient.LogoutAsync"/>
+        public async Task<SessionResponse> LogoutAsync()
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(LogoutUri);
-            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            HttpResponseMessage httpResponseMessage = await _httpClient.GetAsync(LogoutUri).ConfigureAwait(false);
+            return JsonSerializer.Deserialize<SessionResponse>(await httpResponseMessage.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
         /// <summary>

@@ -1,8 +1,15 @@
-﻿using BetfairClient.Models.Session;
+﻿using BetfairClient.Helpers;
+using BetfairClient.Models.Session;
 using System.Threading.Tasks;
 
 namespace BetfairClient.Clients.Interfaces
 {
+    /// <summary>
+    ///     Exposes available methods to work with Betfair Session API
+    /// </summary>
+    /// <remarks>
+    ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Interactive+Login+-+API+Endpoint
+    /// </remarks>
     public interface IBetfairSessionClient
     {
         /// <summary>
@@ -13,22 +20,20 @@ namespace BetfairClient.Clients.Interfaces
         IBetfairSessionClient AddAuthenticationHeader(string authenticationHeader);
 
         /// <summary>
-        ///     Retrieves a session token
+        ///     Retrieves a session token with the given <see cref="SessionRequest.Username"/> and <see cref="SessionRequest.Password"/>.
         /// </summary>
-        /// <param name="bodyRequest"></param>
-        /// <returns></returns>
-        Task<SessionResponse> GetSessionToken(SessionRequest bodyRequest);
+        Task<SessionResponse> GetSessionTokenAsync(SessionRequest bodyRequest);
 
         /// <summary>
-        ///     Extends the session timeout period
+        ///     Keeps the session token, passed on <see cref="BetfairConstants.AuthenticationHeaderName"/> header, alive for another day
         /// </summary>
         /// <returns></returns>
-        Task<SessionResponse> KeepAlive();
+        Task<SessionResponse> KeepAliveAsync();
 
         /// <summary>
-        ///     Logout to terminate current session
+        ///     Invalidates the session token, passed on <see cref="BetfairConstants.AuthenticationHeaderName"/>
         /// </summary>
         /// <returns></returns>
-        Task<SessionResponse> Logout();
+        Task<SessionResponse> LogoutAsync();
     }
 }
