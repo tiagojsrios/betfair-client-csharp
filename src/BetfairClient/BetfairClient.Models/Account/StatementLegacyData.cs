@@ -5,7 +5,7 @@ namespace BetfairClient.Models.Account
     /// <summary>
     ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Accounts+TypeDefinitions#AccountsTypeDefinitions-StatementLegacyData
     /// </summary>
-    public class AccountStatementLegacyData
+    public class StatementLegacyData
     {
         public double AvgPrice { get; set; }
 
@@ -27,7 +27,7 @@ namespace BetfairClient.Models.Account
 
         public string MarketName { get; set; }
 
-        public AccountStatementLegacyDataMarketType MarketType { get; set; }
+        public MarketType MarketType { get; set; }
 
         public DateTime PlacedDate { get; set; }
 

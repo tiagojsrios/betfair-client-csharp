@@ -21,7 +21,12 @@ namespace BetfairClient.Clients
         /// <summary>
         ///     Json serializer options
         /// </summary>
-        private static JsonSerializerOptions _jsonSerializerOptions;
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            IgnoreNullValues = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
 
         /// <summary>
         ///     Account Base Uri
@@ -40,13 +45,6 @@ namespace BetfairClient.Clients
         public BetfairAccountClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-
-            _jsonSerializerOptions = new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                IgnoreNullValues = true
-            };
-            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <inheritdoc/>
@@ -71,44 +69,54 @@ namespace BetfairClient.Clients
             return this;
         }
 
-        /// <inheritdoc/>
-        public async Task<AccountStatementResponse> GetAccountStatement(AccountStatementRequest bodyRequest)
+        /// <inheritdoc cref="IBetfairAccountClient.GetAccountStatementAsync"/>
+        public async Task<AccountStatementReport> GetAccountStatementAsync(string locale, int fromRecord, int recordCount, TimeRange itemDateRange, IncludeItem includeItem, Wallet wallet)
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{AccountUri}/getAccountStatement/", bodyAsStringContent);
+            var bodyRequest = new
+            {
+                Locale = locale,
+                FromRecord = fromRecord,
+                RecordCount = recordCount,
+                ItemDateRange = itemDateRange,
+                IncludeItem = includeItem,
+                Wallet = wallet
+            };
 
-            return JsonSerializer.Deserialize<AccountStatementResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{AccountUri}/getAccountStatement/", bodyAsStringContent).ConfigureAwait(false);
+
+            return JsonSerializer.Deserialize<AccountStatementReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<AccountDetailsResponse> GetAccountDetails()
+        /// <inheritdoc cref="IBetfairAccountClient.GetAccountDetailsAsync"/>
+        public async Task<AccountDetailsResponse> GetAccountDetailsAsync()
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getAccountDetails/");
+            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getAccountDetails/").ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<AccountDetailsResponse> GetDeveloperApplicationKeys()
+        /// <inheritdoc cref="IBetfairAccountClient.GetDeveloperApplicationKeysAsync"/>
+        public async Task<DeveloperApp> GetDeveloperApplicationKeysAsync()
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getDeveloperAppKeys/");
+            HttpResponseMessage response = await _httpClient.GetAsync($"{AccountUri}/getDeveloperAppKeys/").ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<AccountDetailsResponse>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<DeveloperApp>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
         /// <summary>

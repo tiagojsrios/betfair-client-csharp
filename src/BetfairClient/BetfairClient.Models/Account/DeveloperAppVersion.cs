@@ -3,7 +3,7 @@
     /// <summary>
     ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Accounts+TypeDefinitions#AccountsTypeDefinitions-DeveloperAppVersion
     /// </summary>
-    public class AccountDeveloperApplicationKeys
+    public class DeveloperAppVersion
     {
         public string Owner { get; set; }
 
