@@ -22,14 +22,14 @@ namespace BetfairClient.Clients.Interfaces
         /// </summary>
         /// <param name="marketFilter"></param>
         /// <returns></returns>
-        Task<EventTypes> GetListEventTypes(MarketFilter marketFilter);
+        Task<IEnumerable<EventTypes>> GetListEventTypes(MarketFilter marketFilter);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listCompetitions
         /// </summary>
         /// <param name="marketFilter"></param>
         /// <returns></returns>
-        Task<CompetitionResult> GetListCompetitions(MarketFilter marketFilter);
+        Task<IEnumerable<CompetitionResult>> GetListCompetitions(MarketFilter marketFilter);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listTimeRanges
@@ -98,7 +98,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="matchedSince"></param>
         /// <param name="betIds"></param>
         /// <returns></returns>
-        Task<IEnumerable<MarketCatalogue>> GetListMarketBook(IEnumerable<string> marketIds, PriceProjection priceProjection,
+        Task<IEnumerable<MarketBook>> GetListMarketBook(IEnumerable<string> marketIds, PriceProjection priceProjection,
             OrderProjection orderProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef,
             IEnumerable<string> customerStrategyRefs, string? currencyCode, string? locale, DateTime matchedSince, IEnumerable<string> betIds);
 
