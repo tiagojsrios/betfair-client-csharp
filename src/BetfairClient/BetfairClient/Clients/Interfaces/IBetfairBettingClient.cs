@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 namespace BetfairClient.Clients.Interfaces
 {
     /// <summary>
-    /// 
+    ///     Exposes available methods to work with Betfair Betting API
     /// </summary>
+    /// <remarks>
+    ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Betting+API
+    /// </remarks>
     public interface IBetfairBettingClient
     {
         /// <summary>
@@ -22,14 +25,14 @@ namespace BetfairClient.Clients.Interfaces
         /// </summary>
         /// <param name="marketFilter"></param>
         /// <returns></returns>
-        Task<IEnumerable<EventTypes>> GetListEventTypes(MarketFilter marketFilter);
+        Task<IEnumerable<EventTypes>> GetListEventTypesAsync(MarketFilter marketFilter);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listCompetitions
         /// </summary>
         /// <param name="marketFilter"></param>
         /// <returns></returns>
-        Task<IEnumerable<CompetitionResult>> GetListCompetitions(MarketFilter marketFilter);
+        Task<IEnumerable<CompetitionResult>> GetListCompetitionsAsync(MarketFilter marketFilter);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listTimeRanges
@@ -37,7 +40,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="marketFilter"></param>
         /// <param name="timeGranularity"></param>
         /// <returns></returns>
-        Task<IEnumerable<TimeRangeResult>> GetListTimeRanges(MarketFilter marketFilter, TimeGranularity timeGranularity);
+        Task<IEnumerable<TimeRangeResult>> GetListTimeRangesAsync(MarketFilter marketFilter, TimeGranularity timeGranularity);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listEvents
@@ -45,7 +48,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="marketFilter"></param>
         /// <param name="locale"></param>
         /// <returns></returns>
-        Task<IEnumerable<EventResult>> GetListEvents(MarketFilter marketFilter, string? locale);
+        Task<IEnumerable<EventResult>> GetListEventsAsync(MarketFilter marketFilter, string? locale);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listMarketTypes
@@ -53,7 +56,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="marketFilter"></param>
         /// <param name="locale"></param>
         /// <returns></returns>
-        Task<IEnumerable<MarketTypeResult>> GetListMarketTypes(MarketFilter marketFilter, string? locale);
+        Task<IEnumerable<MarketTypeResult>> GetListMarketTypesAsync(MarketFilter marketFilter, string? locale);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listCountries
@@ -61,7 +64,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="marketFilter"></param>
         /// <param name="locale"></param>
         /// <returns></returns>
-        Task<IEnumerable<CountryCodeResult>> GetListCountries(MarketFilter marketFilter, string? locale);
+        Task<IEnumerable<CountryCodeResult>> GetListCountriesAsync(MarketFilter marketFilter, string? locale);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listVenues
@@ -69,7 +72,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="marketFilter"></param>
         /// <param name="locale"></param>
         /// <returns></returns>
-        Task<IEnumerable<VenueResult>> GetListVenues(MarketFilter marketFilter, string? locale);
+        Task<IEnumerable<VenueResult>> GetListVenuesAsync(MarketFilter marketFilter, string? locale);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listMarketCatalogue
@@ -80,7 +83,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="maxResults"></param>
         /// <param name="locale"></param>
         /// <returns></returns>
-        Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogue(MarketFilter marketFilter, 
+        Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogueAsync(MarketFilter marketFilter, 
             IEnumerable<MarketProjection> marketProjection, MarketSort sort, int maxResults, string? locale);
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="matchedSince"></param>
         /// <param name="betIds"></param>
         /// <returns></returns>
-        Task<IEnumerable<MarketBook>> GetListMarketBook(IEnumerable<string> marketIds, PriceProjection priceProjection,
+        Task<IEnumerable<MarketBook>> GetListMarketBookAsync(IEnumerable<string> marketIds, PriceProjection priceProjection,
             OrderProjection orderProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef,
             IEnumerable<string> customerStrategyRefs, string? currencyCode, string? locale, DateTime matchedSince, IEnumerable<string> betIds);
 
@@ -110,7 +113,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="includeBspBets"></param>
         /// <param name="netOfCommission"></param>
         /// <returns></returns>
-        Task<IEnumerable<MarketProfitAndLoss>> GetListMarketProfitAndLoss(IEnumerable<string> marketIds, bool includeSettledBets, bool includeBspBets, bool netOfCommission);
+        Task<IEnumerable<MarketProfitAndLoss>> GetListMarketProfitAndLossAsync(IEnumerable<string> marketIds, bool includeSettledBets, bool includeBspBets, bool netOfCommission);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listCurrentOrders
@@ -126,7 +129,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="fromRecord"></param>
         /// <param name="recordCount"></param>
         /// <returns></returns>
-        Task<CurrentOrderSummaryReport> GetListCurrentOrders(IEnumerable<string> betIds, IEnumerable<string> marketIds, OrderProjection orderProjection,
+        Task<CurrentOrderSummaryReport> GetListCurrentOrdersAsync(IEnumerable<string> betIds, IEnumerable<string> marketIds, OrderProjection orderProjection,
             IEnumerable<string> customerOrderRefs, IEnumerable<string> customerStrategyRefs, TimeRange dateRange, OrderBy orderBy, SortDir sortDir, int fromRecord, int recordCount);
 
         /// <summary>
@@ -148,7 +151,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="fromRecord"></param>
         /// <param name="recordCount"></param>
         /// <returns></returns>
-        Task<ClearedOrderSummaryReport> GetListClearedOrders(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds,
+        Task<ClearedOrderSummaryReport> GetListClearedOrdersAsync(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds,
             IEnumerable<string> marketIds, IEnumerable<string> runnerIds, IEnumerable<string> betIds, IEnumerable<string> customerOrderRefs,
             IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription,
             string locale, int fromRecord, int recordCount);
@@ -163,7 +166,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="customerStrategyRef"></param>
         /// <param name="async"></param>
         /// <returns></returns>
-        Task<PlaceExecutionReport> PlaceOrders(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef,
+        Task<PlaceExecutionReport> PlaceOrdersAsync(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef,
             MarketVersion marketVersion, string customerStrategyRef, bool @async);
 
         /// <summary>
@@ -173,7 +176,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="instructions"></param>
         /// <param name="customerRef"></param>
         /// <returns></returns>
-        Task<CancelExecutionReport> CancelOrders(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef);
+        Task<CancelExecutionReport> CancelOrdersAsync(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/replaceOrders
@@ -184,7 +187,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="marketVersion"></param>
         /// <param name="async"></param>
         /// <returns></returns>
-        Task<ReplaceExecutionReport> ReplaceOrders(string marketId, IEnumerable<ReplaceInstruction> instructions,
+        Task<ReplaceExecutionReport> ReplaceOrdersAsync(string marketId, IEnumerable<ReplaceInstruction> instructions,
             string customerRef, MarketVersion marketVersion, bool @async);
 
         /// <summary>
@@ -194,6 +197,6 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="instructions"></param>
         /// <param name="customerRef"></param>
         /// <returns></returns>
-        Task<UpdateExecutionReport> UpdateOrders(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef);
+        Task<UpdateExecutionReport> UpdateOrdersAsync(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef);
     }
 }

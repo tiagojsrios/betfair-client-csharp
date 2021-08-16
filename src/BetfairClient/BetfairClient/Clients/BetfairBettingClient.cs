@@ -22,7 +22,12 @@ namespace BetfairClient.Clients
         /// <summary>
         ///     Json serializer options
         /// </summary>
-        private static JsonSerializerOptions _jsonSerializerOptions;
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            IgnoreNullValues = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
 
         /// <summary>
         ///     Betting Base Uri
@@ -41,13 +46,6 @@ namespace BetfairClient.Clients
         public BetfairBettingClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-
-            _jsonSerializerOptions = new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                IgnoreNullValues = true
-            };
-            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         /// <inheritdoc/>
@@ -72,36 +70,36 @@ namespace BetfairClient.Clients
             return this;
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<EventTypes>> GetListEventTypes(MarketFilter marketFilter)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListEventTypesAsync"/>
+        public async Task<IEnumerable<EventTypes>> GetListEventTypesAsync(MarketFilter marketFilter)
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEventTypes/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEventTypes/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<EventTypes>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<EventTypes>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<CompetitionResult>> GetListCompetitions(MarketFilter marketFilter)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListCompetitionsAsync"/>
+        public async Task<IEnumerable<CompetitionResult>> GetListCompetitionsAsync(MarketFilter marketFilter)
         {
             if (!ValidateAuthenticationHeader())
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCompetitions/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCompetitions/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<CompetitionResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<CompetitionResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<TimeRangeResult>> GetListTimeRanges(MarketFilter marketFilter, TimeGranularity timeGranularity)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListTimeRangesAsync"/>
+        public async Task<IEnumerable<TimeRangeResult>> GetListTimeRangesAsync(MarketFilter marketFilter, TimeGranularity timeGranularity)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -114,14 +112,14 @@ namespace BetfairClient.Clients
                 Granularity = timeGranularity
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listTimeRanges/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listTimeRanges/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<TimeRangeResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<TimeRangeResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<EventResult>> GetListEvents(MarketFilter marketFilter, string? locale)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListEventsAsync"/>
+        public async Task<IEnumerable<EventResult>> GetListEventsAsync(MarketFilter marketFilter, string? locale)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -134,36 +132,14 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEvents/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEvents/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<EventResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<EventResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<MarketTypeResult>> GetListMarketTypes(MarketFilter marketFilter, string? locale)
-        {
-            if (!ValidateAuthenticationHeader())
-            {
-                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
-            }
-
-            Guard.Against.Null(marketFilter, nameof(marketFilter));
-
-            var bodyRequest = new
-            {
-                Filter = marketFilter,
-                Locale = locale
-            };
-
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketTypes/", bodyAsStringContent);
-
-            return JsonSerializer.Deserialize<IEnumerable<MarketTypeResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
-        }
-
-        /// <inheritdoc/>
-        public async Task<IEnumerable<CountryCodeResult>> GetListCountries(MarketFilter marketFilter, string? locale)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListMarketTypesAsync"/>
+        public async Task<IEnumerable<MarketTypeResult>> GetListMarketTypesAsync(MarketFilter marketFilter, string? locale)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -178,14 +154,14 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCountries/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketTypes/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<CountryCodeResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<MarketTypeResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<VenueResult>> GetListVenues(MarketFilter marketFilter, string? locale)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListCountriesAsync"/>
+        public async Task<IEnumerable<CountryCodeResult>> GetListCountriesAsync(MarketFilter marketFilter, string? locale)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -200,14 +176,36 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listVenues/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCountries/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<VenueResult>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<CountryCodeResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogue(MarketFilter marketFilter, IEnumerable<MarketProjection> marketProjection,
+        /// <inheritdoc cref="IBetfairBettingClient.GetListVenuesAsync"/>
+        public async Task<IEnumerable<VenueResult>> GetListVenuesAsync(MarketFilter marketFilter, string? locale)
+        {
+            if (!ValidateAuthenticationHeader())
+            {
+                throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
+            }
+
+            Guard.Against.Null(marketFilter, nameof(marketFilter));
+
+            var bodyRequest = new
+            {
+                Filter = marketFilter,
+                Locale = locale
+            };
+
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listVenues/", bodyAsStringContent).ConfigureAwait(false);
+
+            return JsonSerializer.Deserialize<IEnumerable<VenueResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
+        }
+
+        /// <inheritdoc cref="IBetfairBettingClient.GetListMarketCatalogueAsync"/>
+        public async Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogueAsync(MarketFilter marketFilter, IEnumerable<MarketProjection> marketProjection,
             MarketSort sort, int maxResults, string? locale)
         {
             if (!ValidateAuthenticationHeader())
@@ -227,14 +225,14 @@ namespace BetfairClient.Clients
                 Locale = locale
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketCatalogue/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketCatalogue/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<MarketCatalogue>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<MarketCatalogue>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<MarketBook>> GetListMarketBook(IEnumerable<string> marketIds, PriceProjection priceProjection,
+        /// <inheritdoc cref="IBetfairBettingClient.GetListMarketBookAsync"/>
+        public async Task<IEnumerable<MarketBook>> GetListMarketBookAsync(IEnumerable<string> marketIds, PriceProjection priceProjection,
             OrderProjection orderProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef,
             IEnumerable<string> customerStrategyRefs, string? currencyCode, string? locale, DateTime matchedSince, IEnumerable<string> betIds)
         {
@@ -260,14 +258,14 @@ namespace BetfairClient.Clients
                 BetIds = betIds
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketBook/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketBook/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<MarketBook>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<MarketBook>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<IEnumerable<MarketProfitAndLoss>> GetListMarketProfitAndLoss(IEnumerable<string> marketIds, bool includeSettledBets, bool includeBspBets, bool netOfCommission)
+        /// <inheritdoc cref="IBetfairBettingClient.GetListMarketProfitAndLossAsync"/>
+        public async Task<IEnumerable<MarketProfitAndLoss>> GetListMarketProfitAndLossAsync(IEnumerable<string> marketIds, bool includeSettledBets, bool includeBspBets, bool netOfCommission)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -284,14 +282,14 @@ namespace BetfairClient.Clients
                 NetOfCommission = netOfCommission
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketProfitAndLoss/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listMarketProfitAndLoss/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<MarketProfitAndLoss>>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<MarketProfitAndLoss>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<CurrentOrderSummaryReport> GetListCurrentOrders(IEnumerable<string> betIds, IEnumerable<string> marketIds, OrderProjection orderProjection,
+        /// <inheritdoc cref="IBetfairBettingClient.GetListCurrentOrdersAsync"/>
+        public async Task<CurrentOrderSummaryReport> GetListCurrentOrdersAsync(IEnumerable<string> betIds, IEnumerable<string> marketIds, OrderProjection orderProjection,
             IEnumerable<string> customerOrderRefs, IEnumerable<string> customerStrategyRefs, TimeRange dateRange, OrderBy orderBy, SortDir sortDir, int fromRecord, int recordCount)
         {
             if (!ValidateAuthenticationHeader())
@@ -313,14 +311,14 @@ namespace BetfairClient.Clients
                 RecordCount = recordCount
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCurrentOrders/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listCurrentOrders/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<CurrentOrderSummaryReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<CurrentOrderSummaryReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<ClearedOrderSummaryReport> GetListClearedOrders(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds, 
+        /// <inheritdoc cref="IBetfairBettingClient.GetListClearedOrdersAsync"/>
+        public async Task<ClearedOrderSummaryReport> GetListClearedOrdersAsync(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds, 
             IEnumerable<string> marketIds, IEnumerable<string> runnerIds, IEnumerable<string> betIds, IEnumerable<string> customerOrderRefs, 
             IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription, 
             string locale, int fromRecord, int recordCount)
@@ -349,14 +347,14 @@ namespace BetfairClient.Clients
                 RecordCount = recordCount
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listClearedOrders/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listClearedOrders/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<ClearedOrderSummaryReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<ClearedOrderSummaryReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<PlaceExecutionReport> PlaceOrders(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef, 
+        /// <inheritdoc cref="IBetfairBettingClient.PlaceOrdersAsync"/>
+        public async Task<PlaceExecutionReport> PlaceOrdersAsync(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef, 
             MarketVersion marketVersion, string customerStrategyRef, bool @async)
         {
             if (!ValidateAuthenticationHeader())
@@ -374,14 +372,14 @@ namespace BetfairClient.Clients
                 Async = @async
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/placeOrders/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/placeOrders/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<PlaceExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<PlaceExecutionReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<CancelExecutionReport> CancelOrders(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef)
+        /// <inheritdoc cref="IBetfairBettingClient.CancelOrdersAsync"/>
+        public async Task<CancelExecutionReport> CancelOrdersAsync(string marketId, IEnumerable<CancelInstruction> instructions, string customerRef)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -395,14 +393,14 @@ namespace BetfairClient.Clients
                 CustomerRef = customerRef
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/cancelOrders/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/cancelOrders/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<CancelExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<CancelExecutionReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<ReplaceExecutionReport> ReplaceOrders(string marketId, IEnumerable<ReplaceInstruction> instructions, 
+        /// <inheritdoc cref="IBetfairBettingClient.ReplaceOrdersAsync"/>
+        public async Task<ReplaceExecutionReport> ReplaceOrdersAsync(string marketId, IEnumerable<ReplaceInstruction> instructions, 
             string customerRef, MarketVersion marketVersion, bool @async)
         {
             if (!ValidateAuthenticationHeader())
@@ -419,14 +417,14 @@ namespace BetfairClient.Clients
                 Async = @async
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<ReplaceExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<ReplaceExecutionReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
-        /// <inheritdoc/>
-        public async Task<UpdateExecutionReport> UpdateOrders(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef)
+        /// <inheritdoc cref="IBetfairBettingClient.UpdateOrdersAsync"/>
+        public async Task<UpdateExecutionReport> UpdateOrdersAsync(string marketId, IEnumerable<UpdateInstruction> instructions, string customerRef)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -443,10 +441,10 @@ namespace BetfairClient.Clients
                 CustomerRef = customerRef
             };
 
-            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, _jsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
-            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent);
+            StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(bodyRequest, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+            HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/replaceOrders/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<UpdateExecutionReport>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<UpdateExecutionReport>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
         /// <summary>

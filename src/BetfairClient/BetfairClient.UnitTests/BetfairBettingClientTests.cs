@@ -45,7 +45,7 @@ namespace BetfairClient.UnitTests
 
             IEnumerable<CountryCodeResult> getListCountriesResponse = await betfairBettingClient
                 .AddAuthenticationHeader("FakeAuthenticationHeader")
-                .GetListCountries(new MarketFilter(), null);
+                .GetListCountriesAsync(new MarketFilter(), null);
 
             // Assert
             getListCountriesResponse.Should().BeEmpty();
@@ -57,7 +57,7 @@ namespace BetfairClient.UnitTests
             IBetfairBettingClient betfairBettingClient = new BetfairBettingClient(_httpClientMock.Object);
 
             // Assert
-            Func<Task> action = async () => await betfairBettingClient.GetListCountries(new MarketFilter(), null);
+            Func<Task> action = async () => await betfairBettingClient.GetListCountriesAsync(new MarketFilter(), null);
             action.Should().ThrowExactly<InvalidOperationException>();
         }
     }
