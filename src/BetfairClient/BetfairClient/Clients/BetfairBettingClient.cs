@@ -1,5 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using BetfairClient.Clients.Interfaces;
+﻿using BetfairClient.Clients.Interfaces;
 using BetfairClient.Helpers;
 using BetfairClient.Models.Betting;
 using System;
@@ -146,8 +145,6 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            Guard.Against.Null(marketFilter, nameof(marketFilter));
-
             var bodyRequest = new
             {
                 Filter = marketFilter,
@@ -168,8 +165,6 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            Guard.Against.Null(marketFilter, nameof(marketFilter));
-
             var bodyRequest = new
             {
                 Filter = marketFilter,
@@ -189,8 +184,6 @@ namespace BetfairClient.Clients
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
-
-            Guard.Against.Null(marketFilter, nameof(marketFilter));
 
             var bodyRequest = new
             {
@@ -213,8 +206,10 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            Guard.Against.Null(marketFilter, nameof(marketFilter));
-            Guard.Against.OutOfRange(maxResults, nameof(maxResults), 0, 1000);
+            if (maxResults < 0 || maxResults > 1000)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maxResults));
+            }
 
             var bodyRequest = new
             {
@@ -240,8 +235,6 @@ namespace BetfairClient.Clients
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
-
-            Guard.Against.NullOrEmpty(marketIds, nameof(marketIds));
 
             var bodyRequest = new
             {
@@ -271,8 +264,6 @@ namespace BetfairClient.Clients
             {
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
-
-            Guard.Against.NullOrEmpty(marketIds, nameof(marketIds));
 
             var bodyRequest = new
             {
@@ -431,8 +422,10 @@ namespace BetfairClient.Clients
                 throw new InvalidOperationException($"{BetfairConstants.AuthenticationHeaderName} header is either not set or empty");
             }
 
-            Guard.Against.NullOrEmpty(marketId, nameof(marketId));
-            Guard.Against.NullOrEmpty(instructions, nameof(instructions));
+            if (string.IsNullOrEmpty(marketId))
+            {
+                throw new ArgumentNullException(nameof(marketId));
+            }
 
             var bodyRequest = new
             {
