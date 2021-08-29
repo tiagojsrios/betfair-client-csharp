@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient.Models", "Bet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient.UnitTests", "BetfairClient.UnitTests\BetfairClient.UnitTests.csproj", "{F453B609-3980-4343-9B3C-261A95F825D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetfairClient.TestClass", "BetfairClient.TestClass\BetfairClient.TestClass.csproj", "{ACBA4361-9833-4C4C-B8B8-233A37148BE8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

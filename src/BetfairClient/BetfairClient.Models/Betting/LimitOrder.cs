@@ -11,12 +11,12 @@
 
         public PersistenceType PersistenceType { get; set; }
 
-        public TimeInForce TimeInForce { get; set; }
+        public TimeInForce? TimeInForce { get; set; }
 
-        public double MinFillSize { get; set; }
+        public double? MinFillSize { get; set; }
 
-        public BetTargetType BetTargetType { get; set; }
+        public BetTargetType? BetTargetType { get; set; }
 
-        public double BetTargetSize { get; set; }
+        public double? BetTargetSize { get; set; }
     }
 }
