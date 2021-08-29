@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,36 +8,38 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class Order
     {
-        public string TextQuery { get; set; }
+        public string BetId { get; set; } = null!;
 
-        public IEnumerable<string> ExchangeIds { get; set; }
+        public OrderType OrderType { get; set; }
 
-        public IEnumerable<string> EventTypeIds { get; set; }
+        public OrderStatus Status { get; set; }
 
-        public IEnumerable<string> EventIds { get; set; }
+        public PersistenceType PersistenceType { get; set; }
 
-        public IEnumerable<string> CompetitionIds { get; set; }
+        public Side Side { get; set; }
 
-        public IEnumerable<string> MarketIds { get; set; }
+        public double Price { get; set; }
 
-        public IEnumerable<string> Venues { get; set; }
+        public double Size { get; set; }
 
-        public bool BspOnly { get; set; }
+        public double BspLiability { get; set; }
 
-        public bool TurnInPlayEnabled { get; set; }
+        public DateTime PlacedDate { get; set; }
 
-        public bool InPlayOnly { get; set; }
+        public double? AvgPriceMatched { get; set; }
 
-        public IEnumerable<MarketBettingType> MarketBettingTypes { get; set; }
+        public double? SizeMatched { get; set; }
 
-        public IEnumerable<string> MarketCountries { get; set; }
+        public double? SizeRemaining { get; set; }
 
-        public IEnumerable<string> MarketTypeCodes { get; set; }
+        public double? SizeLapsed { get; set; }
 
-        public TimeRange MarketStartTime { get; set; }
+        public double? SizeCancelled { get; set; }
 
-        public IEnumerable<OrderStatus> WithOrders { get; set; }
+        public double? SizeVoided { get; set; }
 
-        public IEnumerable<string> RaceTypes { get; set; }
+        public string? CustomerOrderRef { get; set; }
+
+        public string? CustomerStrategyRef { get; set; }
     }
 }

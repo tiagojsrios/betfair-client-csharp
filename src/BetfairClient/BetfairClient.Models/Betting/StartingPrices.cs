@@ -13,7 +13,7 @@ namespace BetfairClient.Models.Betting
 
         public IEnumerable<PriceSize> BackStakeTaken { get; set; }
 
-        public IEnumerable<PriceSize> layLiabilityTaken { get; set; }
+        public IEnumerable<PriceSize> LayLiabilityTaken { get; set; }
 
         public double ActualSP { get; set; }
     }

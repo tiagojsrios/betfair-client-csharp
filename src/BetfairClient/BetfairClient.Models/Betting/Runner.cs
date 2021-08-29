@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using BetfairClient.Models.Betting.Enums;
 
 namespace BetfairClient.Models.Betting
 {
@@ -14,22 +16,24 @@ namespace BetfairClient.Models.Betting
 
         public RunnerStatus Status { get; set; }
 
-        public double adjustmentFactor { get; set; }
+        public double? AdjustmentFactor { get; set; }
 
-        public double LastPriceTraded { get; set; }
+        public double? LastPriceTraded { get; set; }
 
-        public double TotalMatched { get; set; }
-        
-        public DateTime RemovalDate { get; set; }
+        public double? TotalMatched { get; set; }
 
-        public StartingPrices Sp { get; set; }
+        public DateTime? RemovalDate { get; set; }
 
-        public ExchangePrices Ex { get; set; }
+        [JsonPropertyName("Sp")]
+        public StartingPrices? StartingPrices { get; set; }
 
-        public IEnumerable<Order> Orders { get; set; }
+        [JsonPropertyName("Ex")]
+        public ExchangePrices? ExchangePrices { get; set; }
 
-        public IEnumerable<Match> Matches { get; set; }
+        public IEnumerable<Order>? Orders { get; set; }
 
-        public Dictionary<string, IEnumerable<Match>> MatchesByStrategy { get; set; }
+        public IEnumerable<Match>? Matches { get; set; }
+
+        public Dictionary<string, IEnumerable<Match>>? MatchesByStrategy { get; set; }
     }
 }

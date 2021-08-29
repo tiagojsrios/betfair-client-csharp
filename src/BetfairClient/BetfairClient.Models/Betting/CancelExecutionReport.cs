@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetfairClient.Models.Betting.Enums;
+using System.Collections.Generic;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,14 +8,14 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class CancelExecutionReport
     {
-        public string CustomerRef { get; set; }
+        public string? CustomerRef { get; set; }
 
         public ExecutionReportStatus Status { get; set; }
 
-        public ExecutionReportErrorCode ErrorCode { get; set; }
+        public ExecutionReportErrorCode? ErrorCode { get; set; }
 
-        public string MarketId { get; set; }
-        
-        public IEnumerable<CancelInstructionReport> InstructionReports { get; set; }
+        public string? MarketId { get; set; }
+
+        public IEnumerable<CancelInstructionReport>? InstructionReports { get; set; }
     }
 }

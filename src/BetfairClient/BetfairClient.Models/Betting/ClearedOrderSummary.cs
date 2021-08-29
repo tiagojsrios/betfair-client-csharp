@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -32,7 +33,7 @@ namespace BetfairClient.Models.Betting
         public string BetOutcome { get; set; }
 
         public double PriceRequested { get; set; }
-        
+
         public DateTime SettleDate { get; set; }
 
         public DateTime LastMatchedDate { get; set; }

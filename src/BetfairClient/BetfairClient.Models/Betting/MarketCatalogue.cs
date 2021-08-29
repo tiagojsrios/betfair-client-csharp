@@ -8,22 +8,22 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class MarketCatalogue
     {
-        public string MarketId { get; set; }
+        public string MarketId { get; set; } = null!;
 
-        public string MarketName { get; set; }
+        public string MarketName { get; set; } = null!;
 
-        public DateTime MarketStartTime { get; set; }
+        public DateTime? MarketStartTime { get; set; }
 
-        public MarketDescription Description { get; set; }
+        public MarketDescription? Description { get; set; }
 
-        public double TotalMatched { get; set; }
+        public double? TotalMatched { get; set; }
 
-        public IEnumerable<RunnerCatalog> Runners { get; set; }
+        public IEnumerable<RunnerCatalog>? Runners { get; set; }
 
-        public EventType EventType { get; set; }
+        public EventType? EventType { get; set; }
 
-        public Competition Competition { get; set; }
+        public Competition? Competition { get; set; }
 
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
     }
 }

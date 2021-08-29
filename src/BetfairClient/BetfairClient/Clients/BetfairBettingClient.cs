@@ -1,6 +1,7 @@
 ﻿using BetfairClient.Clients.Interfaces;
 using BetfairClient.Helpers;
 using BetfairClient.Models.Betting;
+using BetfairClient.Models.Betting.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc cref="IBetfairBettingClient.GetListEventTypesAsync"/>
-        public async Task<IEnumerable<EventTypes>> GetListEventTypesAsync(MarketFilter marketFilter)
+        public async Task<IEnumerable<EventTypeResult>> GetListEventTypesAsync(MarketFilter marketFilter)
         {
             if (!ValidateAuthenticationHeader())
             {
@@ -80,7 +81,7 @@ namespace BetfairClient.Clients
             StringContent bodyAsStringContent = new StringContent(JsonSerializer.Serialize(marketFilter, JsonSerializerOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
             HttpResponseMessage response = await _httpClient.PostAsync($"{BettingUri}/listEventTypes/", bodyAsStringContent).ConfigureAwait(false);
 
-            return JsonSerializer.Deserialize<IEnumerable<EventTypes>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
+            return JsonSerializer.Deserialize<IEnumerable<EventTypeResult>>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
         }
 
         /// <inheritdoc cref="IBetfairBettingClient.GetListCompetitionsAsync"/>
@@ -309,9 +310,9 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc cref="IBetfairBettingClient.GetListClearedOrdersAsync"/>
-        public async Task<ClearedOrderSummaryReport> GetListClearedOrdersAsync(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds, 
-            IEnumerable<string> marketIds, IEnumerable<string> runnerIds, IEnumerable<string> betIds, IEnumerable<string> customerOrderRefs, 
-            IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription, 
+        public async Task<ClearedOrderSummaryReport> GetListClearedOrdersAsync(BetStatus betStatus, IEnumerable<string> eventTypeIds, IEnumerable<string> eventIds,
+            IEnumerable<string> marketIds, IEnumerable<string> runnerIds, IEnumerable<string> betIds, IEnumerable<string> customerOrderRefs,
+            IEnumerable<string> customerStrategyRefs, Side side, TimeRange settledDateRange, GroupBy groupBy, bool includeItemDescription,
             string locale, int fromRecord, int recordCount)
         {
             if (!ValidateAuthenticationHeader())
@@ -345,7 +346,7 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc cref="IBetfairBettingClient.PlaceOrdersAsync"/>
-        public async Task<PlaceExecutionReport> PlaceOrdersAsync(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef, 
+        public async Task<PlaceExecutionReport> PlaceOrdersAsync(string marketId, IEnumerable<PlaceInstruction> instructions, string customerRef,
             MarketVersion marketVersion, string customerStrategyRef, bool @async)
         {
             if (!ValidateAuthenticationHeader())
@@ -391,7 +392,7 @@ namespace BetfairClient.Clients
         }
 
         /// <inheritdoc cref="IBetfairBettingClient.ReplaceOrdersAsync"/>
-        public async Task<ReplaceExecutionReport> ReplaceOrdersAsync(string marketId, IEnumerable<ReplaceInstruction> instructions, 
+        public async Task<ReplaceExecutionReport> ReplaceOrdersAsync(string marketId, IEnumerable<ReplaceInstruction> instructions,
             string customerRef, MarketVersion marketVersion, bool @async)
         {
             if (!ValidateAuthenticationHeader())

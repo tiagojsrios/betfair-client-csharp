@@ -1,4 +1,5 @@
 ﻿using BetfairClient.Models.Betting;
+using BetfairClient.Models.Betting.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace BetfairClient.Clients.Interfaces
         /// </summary>
         /// <param name="marketFilter"></param>
         /// <returns></returns>
-        Task<IEnumerable<EventTypes>> GetListEventTypesAsync(MarketFilter marketFilter);
+        Task<IEnumerable<EventTypeResult>> GetListEventTypesAsync(MarketFilter marketFilter);
 
         /// <summary>
         ///     Betfair documentation: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/listCompetitions
@@ -83,7 +84,7 @@ namespace BetfairClient.Clients.Interfaces
         /// <param name="maxResults"></param>
         /// <param name="locale"></param>
         /// <returns></returns>
-        Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogueAsync(MarketFilter marketFilter, 
+        Task<IEnumerable<MarketCatalogue>> GetListMarketCatalogueAsync(MarketFilter marketFilter,
             IEnumerable<MarketProjection> marketProjection, MarketSort sort, int maxResults, string? locale);
 
         /// <summary>

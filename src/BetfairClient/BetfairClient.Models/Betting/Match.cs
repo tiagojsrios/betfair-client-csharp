@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,9 +8,9 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class Match
     {
-        public string BetId { get; set; }
+        public string? BetId { get; set; }
 
-        public string MatchId { get; set; }
+        public string? MatchId { get; set; }
 
         public Side Side { get; set; }
 
@@ -17,6 +18,6 @@ namespace BetfairClient.Models.Betting
 
         public double Size { get; set; }
 
-        public DateTime MatchDate { get; set; }
+        public DateTime? MatchDate { get; set; }
     }
 }

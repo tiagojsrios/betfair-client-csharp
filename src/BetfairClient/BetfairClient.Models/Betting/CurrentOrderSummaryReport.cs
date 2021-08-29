@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,7 +8,7 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class CurrentOrderSummaryReport
     {
-        public IEnumerable<CurrentOrderSummary> CurrentOrders { get; set; }
+        public IEnumerable<CurrentOrderSummary> CurrentOrders { get; set; } = Enumerable.Empty<CurrentOrderSummary>();
 
         public bool MoreAvailable { get; set; }
     }

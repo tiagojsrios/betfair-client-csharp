@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -21,28 +22,28 @@ namespace BetfairClient.Models.Betting
 
         public bool TurnInPlayEnabled { get; set; }
 
-        public string MarketType { get; set; }
+        public string MarketType { get; set; } = null!;
 
-        public string Regulator { get; set; }
+        public string Regulator { get; set; } = null!;
 
         public double MarketBaseRate { get; set; }
 
         public bool DiscountAllowed { get; set; }
 
-        public string Wallet { get; set; }
+        public string? Wallet { get; set; }
 
-        public string Rules { get; set; }
+        public string? Rules { get; set; }
 
-        public bool RulesHasDate { get; set; }
+        public bool? RulesHasDate { get; set; }
 
-        public double EachWayDivisor { get; set; }
+        public double? EachWayDivisor { get; set; }
 
-        public string Clarifications { get; set; }
+        public string? Clarifications { get; set; }
 
-        public MarketLineRangeInfo LineRangeInfo { get; set; }
+        public MarketLineRangeInfo? LineRangeInfo { get; set; }
 
-        public string RaceType { get; set; }
+        public string? RaceType { get; set; }
 
-        public PriceLadderDescription PriceLadderDescription { get; set; }
+        public PriceLadderDescription? PriceLadderDescription { get; set; }
     }
 }

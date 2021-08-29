@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,6 +8,6 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class KeyLineDescription
     {
-        public IEnumerable<KeyLineSelection> KeyLine { get; set; }
+        public IEnumerable<KeyLineSelection> KeyLine { get; set; } = Enumerable.Empty<KeyLineSelection>();
     }
 }

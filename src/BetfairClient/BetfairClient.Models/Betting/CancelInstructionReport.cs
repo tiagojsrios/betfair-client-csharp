@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -9,12 +10,12 @@ namespace BetfairClient.Models.Betting
     {
         public InstructionReportStatus Status { get; set; }
 
-        public InstructionReportErrorCode ErrorCode { get; set; }
+        public InstructionReportErrorCode? ErrorCode { get; set; }
 
-        public CancelInstruction Instruction { get; set; }
+        public CancelInstruction? Instruction { get; set; }
 
         public double SizeCancelled { get; set; }
 
-        public DateTime CancelledDate { get; set; }
+        public DateTime? CancelledDate { get; set; }
     }
 }

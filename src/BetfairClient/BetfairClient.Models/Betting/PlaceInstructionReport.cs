@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -13,7 +14,7 @@ namespace BetfairClient.Models.Betting
 
         public OrderStatus? OrderStatus { get; set; }
 
-        public PlaceInstruction Instruction { get; set; }
+        public PlaceInstruction Instruction { get; set; } = null!;
 
         public string? BetId { get; set; }
 

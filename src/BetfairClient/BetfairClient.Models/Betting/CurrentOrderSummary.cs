@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetfairClient.Models.Betting.Enums;
+using System;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,15 +8,15 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class CurrentOrderSummary
     {
-        public string BetId { get; set; }
+        public string BetId { get; set; } = null!;
 
-        public string MarketId { get; set; }
+        public string MarketId { get; set; } = null!;
 
         public long SelectionId { get; set; }
 
         public double Handicap { get; set; }
 
-        public PriceSize PriceSize { get; set; }
+        public PriceSize PriceSize { get; set; } = null!;
 
         public double BspLiability { get; set; }
 
@@ -31,24 +32,26 @@ namespace BetfairClient.Models.Betting
 
         public DateTime MatchedDate { get; set; }
 
-        public double AveragePriceMatched { get; set; }
+        public double? AveragePriceMatched { get; set; }
 
-        public double SizeMatched { get; set; }
+        public double? SizeMatched { get; set; }
 
-        public double SizeRemaining { get; set; }
+        public double? SizeRemaining { get; set; }
 
-        public double SizeLapsed { get; set; }
+        public double? SizeLapsed { get; set; }
 
-        public double SizeCancelled { get; set; }
+        public double? SizeCancelled { get; set; }
 
-        public double SizeVoided { get; set; }
+        public double? SizeVoided { get; set; }
 
-        public string RegulatorAuthCode { get; set; }
+        public string? RegulatorAuthCode { get; set; }
 
-        public string RegulatorCode { get; set; }
+        public string? RegulatorCode { get; set; }
 
-        public string CustomerOrderRef { get; set; }
+        public string? CustomerOrderRef { get; set; }
 
-        public string CustomerStrategyRef { get; set; }
+        public string? CustomerStrategyRef { get; set; }
+
+        public CurrentItemDescription? CurrentItemDescription { get; set; }
     }
 }

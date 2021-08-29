@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BetfairClient.Models.Betting
 {
@@ -7,10 +8,10 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class ExchangePrices
     {
-        public IEnumerable<PriceSize> AvailableToBack { get; set; }
+        public IEnumerable<PriceSize> AvailableToBack { get; set; } = Enumerable.Empty<PriceSize>();
 
-        public IEnumerable<PriceSize> AvailableToLay { get; set; }
+        public IEnumerable<PriceSize> AvailableToLay { get; set; } = Enumerable.Empty<PriceSize>();
 
-        public IEnumerable<PriceSize> TradedVolume { get; set; }
+        public IEnumerable<PriceSize> TradedVolume { get; set; } = Enumerable.Empty<PriceSize>();
     }
 }

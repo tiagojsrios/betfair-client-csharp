@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetfairClient.Models.Betting.Enums;
+using System.Collections.Generic;
 
 namespace BetfairClient.Models.Betting
 {

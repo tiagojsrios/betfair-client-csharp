@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetfairClient.Models.Betting.Enums;
+using System.Collections.Generic;
 
 namespace BetfairClient.Models.Betting
 {
@@ -8,6 +9,8 @@ namespace BetfairClient.Models.Betting
     public class MarketFilter
     {
         public string TextQuery { get; set; }
+
+        public IEnumerable<string> ExchangeIds { get; set; }
 
         public IEnumerable<string> EventTypeIds { get; set; }
 
@@ -19,11 +22,11 @@ namespace BetfairClient.Models.Betting
 
         public IEnumerable<string> Venues { get; set; }
 
-        public bool? BspOnly { get; set; }
+        public bool BspOnly { get; set; }
 
-        public bool? TurnInPlayEnabled { get; set; }
+        public bool TurnInPlayEnabled { get; set; }
 
-        public bool? InPlayOnly { get; set; }
+        public bool InPlayOnly { get; set; }
 
         public IEnumerable<MarketBettingType> MarketBettingTypes { get; set; }
 
@@ -32,6 +35,8 @@ namespace BetfairClient.Models.Betting
         public IEnumerable<string> MarketTypeCodes { get; set; }
 
         public TimeRange MarketStartTime { get; set; }
+
+        public IEnumerable<OrderStatus> WithOrders { get; set; }
 
         public IEnumerable<string> RaceTypes { get; set; }
     }

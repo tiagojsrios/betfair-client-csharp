@@ -5,8 +5,8 @@
     /// </summary>
     public class CancelInstruction
     {
-        public string BetId { get; set; }
+        public string? BetId { get; set; }
 
-        public double SizeReduction { get; set; }
+        public double? SizeReduction { get; set; }
     }
 }

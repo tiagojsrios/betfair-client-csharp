@@ -5,7 +5,7 @@
     /// </summary>
     public class ReplaceInstruction
     {
-        public string BetId { get; set; }
+        public string BetId { get; set; } = null!;
 
         public double NewPrice { get; set; }
     }

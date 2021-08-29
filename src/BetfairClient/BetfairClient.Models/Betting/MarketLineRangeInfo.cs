@@ -11,6 +11,6 @@
 
         public double Interval { get; set; }
 
-        public string MarketUnit { get; set; }
+        public string MarketUnit { get; set; } = null!;
     }
 }
