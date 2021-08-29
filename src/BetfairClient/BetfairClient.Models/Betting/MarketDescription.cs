@@ -10,7 +10,7 @@ namespace BetfairClient.Models.Betting
         public bool PersistenceEnabled { get; set; }
 
         public bool BspMarket { get; set; }
-        
+
         public DateTime MarketTime { get; set; }
 
         public DateTime SuspendTime { get; set; }
@@ -19,18 +19,18 @@ namespace BetfairClient.Models.Betting
 
         public MarketBettingType BettingType { get; set; }
 
-        public DateTime TurnInPlayEnabled { get; set; }
-        
+        public bool TurnInPlayEnabled { get; set; }
+
         public string MarketType { get; set; }
 
         public string Regulator { get; set; }
 
         public double MarketBaseRate { get; set; }
-        
+
         public bool DiscountAllowed { get; set; }
 
         public string Wallet { get; set; }
-        
+
         public string Rules { get; set; }
 
         public bool RulesHasDate { get; set; }

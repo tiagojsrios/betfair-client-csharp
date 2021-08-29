@@ -7,14 +7,14 @@ namespace BetfairClient.Models.Betting
     /// </summary>
     public class PlaceExecutionReport
     {
-        public string CustomerRef { get; set; }
+        public string? CustomerRef { get; set; }
 
         public ExecutionReportStatus Status { get; set; }
 
-        public ExecutionReportErrorCode ErrorCode { get; set; }
+        public ExecutionReportErrorCode? ErrorCode { get; set; }
 
-        public string MarketId { get; set; }
+        public string? MarketId { get; set; }
 
-        public IEnumerable<PlaceInstructionReport> InstructionReports { get; set; }
+        public IEnumerable<PlaceInstructionReport>? InstructionReports { get; set; }
     }
 }
